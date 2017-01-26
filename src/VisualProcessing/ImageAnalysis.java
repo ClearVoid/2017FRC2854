@@ -2,11 +2,14 @@ package VisualProcessing;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.*;
 
 import javax.imageio.ImageIO;
 
 public class ImageAnalysis {
 
+	PrintWriter stacktraceOut = new PrintWriter(new BufferedWriter(new FileWriter("stacktrace.txt")));
+	
 	public static void main(String[] args) {
 		
 		String path = "src/VisualProcessing/blueTap.png";
@@ -74,7 +77,7 @@ public class ImageAnalysis {
 		System.out.println("green: mean: " + greenAvg + " stDev: " + greenStDev);
 		
 		} catch (Exception e) {
-			e.printStackTrace();
+			stacktraceOut.printStackTrace();
 		}
 		
 	}
