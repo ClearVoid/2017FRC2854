@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 public class EdgeThin {
+	
 	private static final int[][] structEle = { { 0, 0, 0 }, { 2, 255, 2 },
 			{ 255, 255, 255 } };
 	private static final int[][] structEle1 = { { 2, 0, 0 }, { 255, 255, 0 },
