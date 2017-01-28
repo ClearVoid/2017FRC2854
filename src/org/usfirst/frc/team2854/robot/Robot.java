@@ -46,10 +46,8 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putData("Auto mode", chooser);
     	for(int i = 0; i < stickCount; i++){stick[i] = new Joystick(stickPorts[i]);}
     	
-    	
     	gyro = new AnalogGyro(gyroPort);
     	driveTrain = new DriveTrain();
-    	
     	
     }
 	
@@ -68,6 +66,8 @@ public class Robot extends IterativeRobot {
     public void autonomousInit(){
     	Scheduler.getInstance().add(resetThisRobot);
         autonomousCommand = (Command) chooser.getSelected();
+        
+        
         if (autonomousCommand != null) autonomousCommand.start();
     }
 

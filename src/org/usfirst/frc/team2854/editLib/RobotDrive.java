@@ -51,7 +51,6 @@ public class RobotDrive implements MotorSafety {
 	protected static boolean kArcadeStandard_Reported = false;
 	protected static boolean kMecanumCartesian_Reported = false;
 	protected static boolean kMecanumPolar_Reported = false;
-	private static final float e = 2.718281828459045235f;
 
 	// **************************************************************************************************************
 	public RobotDrive(SpeedController[] motors, int motorCount) {
@@ -162,22 +161,7 @@ public class RobotDrive implements MotorSafety {
 		}
 	}
 
-	private static float sigmoid (float x){
-		return (float) (1/(1+(Math.pow(e, -x))));
-	}
 	
-	private static float sigmoidDerivative(float x){
-		return sigmoid(x) * (1-sigmoid(x));
-	}
-
-	public void driveApproachTime(float deltaT){
-		float startTime;
-		float currentTime;
-		
-	}
-	public void driveApproachDistance(float deltaX){
-		
-	}
 	
 	
 	
