@@ -1,16 +1,29 @@
 package VisualProcessing;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.*;
 
 import javax.imageio.ImageIO;
 
 public class ImageAnalysis {
-
-	PrintWriter stacktraceOut = new PrintWriter(new BufferedWriter(new FileWriter("stacktrace.txt")));
 	
-	public static void main(String[] args) {
+	static Boolean forChanged = false;
+	
+	public static void main(String[] args) throws IOException {
+		
+		FileWriter errorFile = new FileWriter("stacktrace.log", true);
+		PrintWriter pw = new PrintWriter(errorFile);
+		
+		/*try {
+			
+		    File file = new File("stacktrace.log");
+		    FileInputStream ps = new FileInputStream(file);
+		    
+		} catch (FileNotFoundException exception) {
+			
+		    exception.printStackTrace();
+		    
+		}*/
 		
 		String path = "src/VisualProcessing/blueTap.png";
 		try {
@@ -27,6 +40,9 @@ public class ImageAnalysis {
 		double total = 0;
 		
 		for(int x = 0; x < img.getWidth(); x++) {
+			
+			forChanged = false;
+			
 			for(int y = 0; y < img.getHeight(); y++) {
 				
 				int rgb = img.getRGB(x, y);
@@ -77,7 +93,8 @@ public class ImageAnalysis {
 		System.out.println("green: mean: " + greenAvg + " stDev: " + greenStDev);
 		
 		} catch (Exception e) {
-			stacktraceOut.printStackTrace();
+			e.printStackTrace(pw);
+			pw.close();
 		}
 		
 	}
