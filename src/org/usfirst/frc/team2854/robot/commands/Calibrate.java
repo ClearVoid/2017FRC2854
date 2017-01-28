@@ -8,9 +8,14 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 public class Calibrate extends Command{
 	private static AnalogGyro gyro;
 	private static DriveTrain drive;
+	private float[] power = new float[2];
+	private static float defaultPower = 0.5f;
 	
 	public Calibrate(){
 		requires(Robot.driveTrain);
+		for(int i = 0; i < 2; i++){
+			power[i] = 0;
+		}
 	}
 	private static float[] limit(float[] input){
 		float ratio;
@@ -26,13 +31,6 @@ public class Calibrate extends Command{
 		}
 		return input;
 	}
-	private static void deltaDrive(){
-		
-	}
-	public float[] run(){
-		float[] power = new float[2];
-		return power;
-	}
 	
 	protected void initialize(){
 		gyro = Robot.gyro;
@@ -41,7 +39,6 @@ public class Calibrate extends Command{
 	protected void execute(){
 		
 	}
-	
 	protected boolean isFinished(){
 		return false;
 	}
@@ -49,7 +46,6 @@ public class Calibrate extends Command{
 		
 	}
 	protected void interrupted() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("ERROR: Calibration INTERRUPTED");
 	}
 }

@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.PIDSourceType;
 public class DriveTrain extends Subsystem{
 	private static final float diameter = 0.05f;//meters
 	private static final float pi = 3.1415926553589323f;
+	private static final float e = 2.718281828459045235f;
 	public static final float width = 1;// in meters
 	//WIP
 	// **************************************************************************************************************
@@ -37,7 +38,7 @@ public class DriveTrain extends Subsystem{
 	
 	private static final int gyroPort = 2;
 	private AnalogGyro gyro;
-	protected RobotDrive driveTrain;
+	public RobotDrive drive;
 	
 
 	
@@ -52,11 +53,11 @@ public class DriveTrain extends Subsystem{
 		encoder[0].setPIDSourceType(PIDSourceType.kDisplacement);
 		
 		
-		driveTrain = new RobotDrive(driveCim,driveCimCount);
-		driveTrain.setSafetyEnabled(true);
-		driveTrain.setExpiration(0.1);
-		driveTrain.setSensitivity(0.5);
-		driveTrain.setMaxOutput(1.0);
+		drive = new RobotDrive(driveCim,driveCimCount);
+		drive.setSafetyEnabled(true);
+		drive.setExpiration(0.1);
+		drive.setSensitivity(0.5);
+		drive.setMaxOutput(1.0);
 		
 		
 		
@@ -69,14 +70,12 @@ public class DriveTrain extends Subsystem{
 	}
 	public void initDefaultCommand(){
 	}
-	public void setPower(double left, double right){driveTrain.setArrayMotorOutputs(left,right);}
+	public void setPower(double left, double right){drive.setArrayMotorOutputs(left,right);}
 	public double getDistance(Encoder encoder){
 		return encoder.get()*diameter*90/pi;
 	}
-	public float[] deltaDrive(double leftPower, double rightPower,float deltaT){
-		driveTrain.setArrayMotorOutputs(leftPower, rightPower);
-		float[] deltaD = new float[2];
-		return deltaD;
+	
+	public void rotate(float theta,float omega){
 		
 	}
 }

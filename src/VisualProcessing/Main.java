@@ -21,11 +21,7 @@ import javax.swing.SwingUtilities;
 
 import com.github.sarxos.webcam.Webcam;
 
-
-
-
 public class Main {
-	
 	
 	
 	public static Webcam webcam = Webcam.getDefault();

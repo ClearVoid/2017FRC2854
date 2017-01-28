@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.hal.FRCNetComm.tInstances;
 import edu.wpi.first.wpilibj.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.wpilibj.hal.HAL;
+import java.math.*;
 
 import static java.util.Objects.requireNonNull;
 
@@ -50,6 +51,7 @@ public class RobotDrive implements MotorSafety {
 	protected static boolean kArcadeStandard_Reported = false;
 	protected static boolean kMecanumCartesian_Reported = false;
 	protected static boolean kMecanumPolar_Reported = false;
+	private static final float e = 2.718281828459045235f;
 
 	// **************************************************************************************************************
 	public RobotDrive(SpeedController[] motors, int motorCount) {
@@ -101,6 +103,31 @@ public class RobotDrive implements MotorSafety {
 			m_safetyHelper.feed();
 	}
 
+	public void setArrayMotorOutputs(double output){
+		boolean motorNull = false;
+		for (int t = 0; t < motorCount; t++) {
+			if (m_motors[t] == null) {
+				motorNull = true;
+			}
+		}
+		if (motorNull == true) {
+			for (int t = 0; t < motorCount; t++) {
+				m_motors[t] = null;
+			}
+			throw new NullPointerException("Null motor provided");
+		}
+		for(int t = 0; t < motorCount; t++){
+			m_motors[t].set(limit(output) * m_maxOutput);
+		}
+		
+	}
+
+	public float[] deltaDrive(double leftPower, double rightPower,float deltaT){
+		setArrayMotorOutputs(leftPower, rightPower);
+		float[] deltaD = new float[2];
+		return deltaD;
+	}
+
 	public void free() {
 		if (m_allocatedSpeedControllers) {
 			for (int t = 0; t < motorCount; t++) {
@@ -134,6 +161,26 @@ public class RobotDrive implements MotorSafety {
 			m_motors[i].setInverted(isInverted[i]);
 		}
 	}
+
+	private static float sigmoid (float x){
+		return (float) (1/(1+(Math.pow(e, -x))));
+	}
+	
+	private static float sigmoidDerivative(float x){
+		return sigmoid(x) * (1-sigmoid(x));
+	}
+
+	public void driveApproachTime(float deltaT){
+		float startTime;
+		float currentTime;
+		
+	}
+	public void driveApproachDistance(float deltaX){
+		
+	}
+	
+	
+	
 	// **************************************************************************************************************
 	/**
 	 * Drive the motors at "outputMagnitude" and "curve". Both outputMagnitude
