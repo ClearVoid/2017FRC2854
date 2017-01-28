@@ -7,7 +7,13 @@ This repository includes:
 - drive controls
 
 List of API:
-- Webcam ( need to find link )
-- FRC Drive API ( need to find link)
+- Webcam
+- FRC Drive API
+- openCV
+- Network Tables
+- WPLib
+
+All API/Libraries are available through the /Libraries folder.
+
 
 Documentation should be within each package.
