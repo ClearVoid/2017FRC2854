@@ -71,6 +71,7 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	private static float sigmoid(float x, float q, float targetX, boolean reflect) {
+		//https://www.desmos.com/calculator/4zxbsosrpn
 		x = reflect ? -x : x;
 		return (float) (((1 / (1 + Math.pow((1 / q - 1), 1 - 2 * x / targetX))) - q) / (1 - 2 * q));
 	}
@@ -80,7 +81,6 @@ public class DriveTrain extends Subsystem {
 		return (Float) null;
 	}
 
-	
 	public void setPower(double left, double right) {
 		drive.setArrayMotorOutputs(left, right);
 	}
