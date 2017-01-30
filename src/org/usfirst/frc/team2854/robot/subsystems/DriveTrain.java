@@ -12,7 +12,8 @@ import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.PIDSourceType;
-//import edu.wpi.first.wpilibj.RobotDrive;
+
+import java.math.*;
 
 public class DriveTrain extends Subsystem {
 	private static final float diameter = 0.05f;// meters
@@ -23,13 +24,13 @@ public class DriveTrain extends Subsystem {
 	// **************************************************************************************************************
 	public static final float leftPowerToVelocityConstant = 1;
 	public static final float rightPowerToVelocityConstant = 1;
-	// Assuming that friction is constant (Air resistance is negligible)
+	// Assuming that friction is constant
 	// These constants are obtained thorough the Calibration command;
 	// **************************************************************************************************************
 
 	private static final int driveCimCount = 4;
 	private SpeedController[] driveCim = new SpeedController[driveCimCount];
-	// 0 = fl,1 = fr, 2 = bl, 4, br; Even numbers left, odd right; int/2 is
+	// 0 = fl,1 = fr, 2 = bl, 3 = br; Even numbers left, odd right; int/2 is
 	// front or back
 
 	private static final int encoderCount = 2;
@@ -68,7 +69,18 @@ public class DriveTrain extends Subsystem {
 
 	public void initDefaultCommand() {
 	}
+	
+	private static float sigmoid(float x, float q, float targetX, boolean reflect) {
+		x = reflect ? -x : x;
+		return (float) (((1 / (1 + Math.pow((1 / q - 1), 1 - 2 * x / targetX))) - q) / (1 - 2 * q));
+	}
 
+	private static float sigmoidDerivative(float x, boolean reflect) {
+		
+		return (Float) null;
+	}
+
+	
 	public void setPower(double left, double right) {
 		drive.setArrayMotorOutputs(left, right);
 	}
@@ -77,21 +89,22 @@ public class DriveTrain extends Subsystem {
 		return encoder.get() * diameter * 90 / pi;
 	}
 
-	public void rotate(float theta, float omega) {
-		
+	public float[] rotate(float theta, float omega) {
+		return null;
 	}
 
-	private static float sigmoid(float x, boolean reflect) {
-		x = reflect ? -x : x;
-		return (float) (1 / (1 + (Math.pow(e, -x))));
+	public float[] driveApproachParameterSig(float currentX, float targetX, float threshold, float q) {
+		float[] output = new float[2];
+		// Make sure that float q is under 0.5
+		output[0] = sigmoid(targetX - currentX, 0.1f, targetX,false);
+		output[1] = output[0];
+		return output;
 	}
 
-	private static float sigmoidDerivative(float x, boolean reflect) {
-		return (reflect ? -1 : 1) * (sigmoid(x, false) * (1 - sigmoid(x, false)));
-	}
-
-	public float[] updateDriveApproachParameter(float deltaX, float targetX, float threshold, float[] inputPower){
-		sigmoid(,true);
-		return inputPower;
+	public float[] driveApproachParameterLinear(float currentX, float targetX, float threshold) {
+		float[] output = new float[2];
+		output[0] = (targetX - currentX) / targetX;
+		output[1] = output[0];
+		return output;
 	}
 }
