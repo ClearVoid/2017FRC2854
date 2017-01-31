@@ -22,8 +22,8 @@ public class DriveTrain extends Subsystem {
 	public static final float width = 1;// in meters
 	// WIP
 	// **************************************************************************************************************
-	public static final float leftPowerToVelocityConstant = 1;
-	public static final float rightPowerToVelocityConstant = 1;
+	
+	public static final float[] velocityToPower = {1,1};
 	// Assuming that friction is constant
 	// These constants are obtained thorough the Calibration command;
 	// **************************************************************************************************************
@@ -86,13 +86,30 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public double getDistance(Encoder encoder) {
-		return encoder.get() * diameter * 90 / pi;
+		return encoder.get() * diameter * 90 / pi;// in meters
+		
 	}
 
-	public float[] rotate(float theta, float omega) {
-		return null;
+	public float[] rotateEncoder(float theta, float omega,boolean directionLeft,float threshold) {
+		float[] output = new float[2];
+		if(Math.abs((getDistance(encoder[0]) - getDistance(encoder[1]))) < threshold){
+			output[directionLeft ? 1:0] = 0;
+		}else{
+			output[directionLeft ? 1:0] = omega * width * velocityToPower[directionLeft ? 1:0];
+		}
+		return output;
 	}
 
+	public float[] rotateGyro(float theta,float omega, boolean directionLeft, float threshold){
+		float[] output = new float[2];
+		if((gyro.getAngle() - theta) < threshold){
+			output[directionLeft ? 1:0] = 0;
+		}else{
+			output[directionLeft ? 1:0] = omega * width * velocityToPower[directionLeft ? 1:0];
+		}
+		return output;
+	}
+	
 	public float[] driveApproachParameterSig(float currentX, float targetX, float threshold, float q) {
 		float[] output = new float[2];
 		// Make sure that float q is under 0.5
@@ -105,6 +122,18 @@ public class DriveTrain extends Subsystem {
 		float[] output = new float[2];
 		output[0] = (targetX - currentX) / targetX;
 		output[1] = output[0];
+		return output;
+	}
+	
+	public float[] hardDrive(float distance, float velocity, float threshold){
+		float[] output = new float[2];
+		if(Math.abs((getDistance(encoder[0])+getDistance(encoder[1]))/2 - distance) < threshold){
+			output[0] = 0;
+			output[1] = output[0];
+		}else{
+			output[0] = velocityToPower[0] * velocity;
+			output[1] = velocityToPower[1] * velocity;
+		}
 		return output;
 	}
 }

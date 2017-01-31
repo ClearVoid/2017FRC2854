@@ -78,7 +78,7 @@ public class RobotDrive implements MotorSafety {
 		drive(0, 0);
 	}
 
-	public void setArrayMotorOutputs(double leftOuput, double rightOutput) {
+	public void setArrayMotorOutputs(double leftOutput, double rightOutput) {
 		boolean motorNull = false;
 		for (int t = 0; t < motorCount; t++) {
 			if (m_motors[t] == null) {
@@ -91,18 +91,15 @@ public class RobotDrive implements MotorSafety {
 			}
 			throw new NullPointerException("Null motor provided");
 		}
-		for (int t = 0; t < motorCount / 2; t++) {
-			m_motors[t].set(limit(rightOutput) * m_maxOutput);
-		}
-		for (int t = 2; t <= motorCount; t++) {
-			m_motors[t].set(-limit(rightOutput) * m_maxOutput);
-		}
-
+		for (int i = 0; i < motorCount; i++) {
+			m_motors[i].set(
+					(limit(rightOutput) * m_maxOutput) * (i % 2) + (limit(leftOutput) * m_maxOutput) * (1 - i % 2));
+		} // This is a really good line, much long, very efficient;
 		if (m_safetyHelper != null)
 			m_safetyHelper.feed();
 	}
 
-	public void setArrayMotorOutputs(double output){
+	public void setArrayMotorOutputs(double output) {
 		boolean motorNull = false;
 		for (int t = 0; t < motorCount; t++) {
 			if (m_motors[t] == null) {
@@ -115,13 +112,13 @@ public class RobotDrive implements MotorSafety {
 			}
 			throw new NullPointerException("Null motor provided");
 		}
-		for(int t = 0; t < motorCount; t++){
+		for (int t = 0; t < motorCount; t++) {
 			m_motors[t].set(limit(output) * m_maxOutput);
 		}
-		
+
 	}
 
-	public float[] deltaDrive(double leftPower, double rightPower,float deltaT){
+	public float[] deltaDrive(double leftPower, double rightPower, float deltaT) {
 		setArrayMotorOutputs(leftPower, rightPower);
 		float[] deltaD = new float[2];
 		return deltaD;
@@ -156,15 +153,11 @@ public class RobotDrive implements MotorSafety {
 	}
 
 	public void setInvertedMotor(boolean[] isInverted) {
-		for(int i = 0; i < motorCount; i++){
+		for (int i = 0; i < motorCount; i++) {
 			m_motors[i].setInverted(isInverted[i]);
 		}
 	}
 
-	
-	
-	
-	
 	// **************************************************************************************************************
 	/**
 	 * Drive the motors at "outputMagnitude" and "curve". Both outputMagnitude
@@ -563,7 +556,7 @@ public class RobotDrive implements MotorSafety {
 		wheelSpeeds[MotorType.kRearRight.value] = xIn + yIn - rotation;
 
 		normalize(wheelSpeeds);
-		
+
 		m_motors[0].set(wheelSpeeds[MotorType.kFrontLeft.value] * m_maxOutput);
 		m_motors[1].set(wheelSpeeds[MotorType.kFrontRight.value] * m_maxOutput);
 		m_motors[2].set(wheelSpeeds[MotorType.kRearLeft.value] * m_maxOutput);
@@ -611,7 +604,7 @@ public class RobotDrive implements MotorSafety {
 		wheelSpeeds[MotorType.kRearRight.value] = (sinD * magnitude - rotation);
 
 		normalize(wheelSpeeds);
-		
+
 		m_motors[0].set(wheelSpeeds[MotorType.kFrontLeft.value] * m_maxOutput);
 		m_motors[1].set(wheelSpeeds[MotorType.kFrontRight.value] * m_maxOutput);
 		m_motors[2].set(wheelSpeeds[MotorType.kRearLeft.value] * m_maxOutput);

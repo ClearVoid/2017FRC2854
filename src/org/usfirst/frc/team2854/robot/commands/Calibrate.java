@@ -17,6 +17,7 @@ public class Calibrate extends Command{
 			power[i] = 0;
 		}
 	}
+	
 	private static float[] limit(float[] input){
 		float ratio;
 		if(input[0] > input[1]){
@@ -36,15 +37,19 @@ public class Calibrate extends Command{
 		gyro = Robot.gyro;
 		drive = Robot.driveTrain;
 	}
+	
 	protected void execute(){
 		
 	}
+	
 	protected boolean isFinished(){
 		return false;
 	}
+	
 	protected void end(){
 		
 	}
+	
 	protected void interrupted() {
 		System.out.println("ERROR: Calibration INTERRUPTED");
 	}
