@@ -3,6 +3,7 @@ package org.usfirst.frc.team2854.robot.subsystems;
 import org.usfirst.frc.team2854.editLib.RobotDrive;
 import org.usfirst.frc.team2854.robot.Robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -37,7 +38,7 @@ public class DriveTrain extends Subsystem {
 	public Encoder[] encoder = new Encoder[encoderCount];
 
 	private static final int gyroPort = 2;
-	private AnalogGyro gyro;
+	public AnalogGyro gyro;
 	public RobotDrive drive;
 
 	public DriveTrain() {
@@ -69,22 +70,31 @@ public class DriveTrain extends Subsystem {
 
 	public void initDefaultCommand() {
 	}
-	
-	private static float sigmoid(float x, float q, float targetX, boolean reflect) {
-		//https://www.desmos.com/calculator/4zxbsosrpn
-		x = reflect ? -x : x;
-		return (float) (((1 / (1 + Math.pow((1 / q - 1), 1 - 2 * x / targetX))) - q) / (1 - 2 * q));
-	}
-
-	private static float sigmoidDerivative(float x, boolean reflect) {
-		
-		return (Float) null;
-	}
 
 	public void setPower(double left, double right) {
 		drive.setArrayMotorOutputs(left, right);
 	}
+	
+	public void setPower(double output){
+		drive.setArrayMotorOutputs(output);
+	}
 
+	public void setPower(double[] output){
+		drive.setArrayMotorOutputs(output[0],output[1]);
+	}
+	
+	public void setPower(float[] output){
+		drive.setArrayMotorOutputs((double)output[0],(double)output[1]);
+	}
+	
+	public double getAngle(AnalogGyro gyro){
+		return gyro.getAngle();
+	}
+	
+	public double getAngle(Encoder[] encoder){
+		return (getDistance(encoder[1])-getDistance(encoder[0]))/width;
+	}
+	
 	public double getDistance(Encoder encoder) {
 		return encoder.get() * diameter * 90 / pi;// in meters
 		
@@ -110,14 +120,6 @@ public class DriveTrain extends Subsystem {
 		return output;
 	}
 	
-	public float[] driveApproachParameterSig(float currentX, float targetX, float threshold, float q) {
-		float[] output = new float[2];
-		// Make sure that float q is under 0.5
-		output[0] = sigmoid(targetX - currentX, 0.1f, targetX,false);
-		output[1] = output[0];
-		return output;
-	}
-
 	public float[] driveApproachParameterLinear(float currentX, float targetX, float threshold) {
 		float[] output = new float[2];
 		output[0] = (targetX - currentX) / targetX;
@@ -136,4 +138,5 @@ public class DriveTrain extends Subsystem {
 		}
 		return output;
 	}
+
 }

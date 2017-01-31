@@ -4,23 +4,32 @@ import edu.wpi.first.wpilibj.command.Command;
 
 import org.usfirst.frc.team2854.robot.Robot;
 
-public class ExampleCommand extends Command {
+public class DriveDeltaT extends Command{
 	private static boolean isFinished = false;
-	
-	public ExampleCommand() {
-		// Use requires() here to declare subsystem dependencies
-		requires(Robot.exampleSubsystem);
+	private float startTime;
+	private float currentTime;
+	private float[] power;
+	private float deltaT;
+	public DriveDeltaT(float[] velocityToPower, float velocity, float deltaT){
+		// deltaT in seconds;
+		requires(Robot.driveTrain);
+		power[0] = velocity * velocityToPower[0];
+		power[1] = velocity * velocityToPower[1];
+		this.deltaT = deltaT;
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		startTime = System.currentTimeMillis();
+		currentTime = System.currentTimeMillis();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		isFinished = true;
+		Robot.driveTrain.setPower(power);
+		if((currentTime - startTime) > deltaT*1000){isFinished = true;}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -32,6 +41,7 @@ public class ExampleCommand extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
+		Robot.driveTrain.setPower(0);
 	}
 
 	// Called when another command which requires one or more of the same

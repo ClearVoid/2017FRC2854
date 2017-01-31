@@ -9,16 +9,16 @@ import org.usfirst.frc.team2854.editLib.*;
 
 public class ResetRobot extends Command {
 	Robot robot;
-	private boolean isFinished;
-	public ResetRobot(Robot robot){
-		this.robot = robot;
+	private static boolean isFinished;
+	public ResetRobot(){
+		requires(Robot.driveTrain);
 		isFinished = false;
 	}
 	@Override 
 	protected void execute(){
 		//Reset the current subsystems
-		robot.driveTrain.drive.setArrayMotorOutputs(0);
-		
+		Robot.driveTrain.drive.setArrayMotorOutputs(0);
+		Robot.driveTrain.gyro.reset();
 		isFinished = true;
 	}
 	@Override

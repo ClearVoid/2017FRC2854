@@ -32,9 +32,9 @@ public class Robot extends IterativeRobot {
 	public static DriveTrain driveTrain;
 	public static ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	//initialize commands
-	Command resetThisRobot = new ResetRobot(this);
+	Command resetThisRobot = new ResetRobot();
+	Command autonomousCommand;
 	
-    Command autonomousCommand;
     SendableChooser chooser;
 
     
@@ -57,6 +57,8 @@ public class Robot extends IterativeRobot {
          * You can use it to reset any subsystem information you want to clear when
     	 * the robot is disabled.
          */
+    	Scheduler.getInstance().add(resetThisRobot);
+		Scheduler.getInstance().run();
     }
 	
 	public void disabledPeriodic(){

@@ -2,14 +2,14 @@ package org.usfirst.frc.team2854.robot.commands;
 
 import org.usfirst.frc.team2854.robot.Robot;
 
-import edu.wpi.first.wpilibj.command.*;;
-
-public class HardAuto extends Command {
+import edu.wpi.first.wpilibj.command.*;
+public class Auto extends Command{
 	private final int maneuverCount = 3;
 	float[][] powers = new float[maneuverCount][2];
-	private boolean isFinished;
+	private static boolean isFinished;
+	private Command resetRobot = new ResetRobot();
 
-	public HardAuto() {
+	public Auto() {
 		requires(Robot.driveTrain);
 	}
 
@@ -33,8 +33,8 @@ public class HardAuto extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-
-		if (false) {
+		
+		if (true) {
 			isFinished = true;
 		}
 	}
@@ -48,6 +48,8 @@ public class HardAuto extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
+		Scheduler.getInstance().add(resetRobot);
+		Scheduler.getInstance().run();
 	}
 
 	// Called when another command which requires one or more of the same
