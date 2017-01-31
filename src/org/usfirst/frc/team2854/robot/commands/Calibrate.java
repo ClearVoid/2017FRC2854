@@ -40,7 +40,7 @@ public class Calibrate extends Command {
 		Scheduler.getInstance().run();
 		if (Math.abs(Robot.driveTrain.getAngle(Robot.driveTrain.gyro)) < threshold)
 			return true;
-
+			
 		return false;
 	}
 
@@ -52,6 +52,7 @@ public class Calibrate extends Command {
 	protected void initialize() {
 	}
 
+	@Override
 	protected void execute() {
 		if (calibrateRotate()) {
 			if (calibrateVelocityToPower())
