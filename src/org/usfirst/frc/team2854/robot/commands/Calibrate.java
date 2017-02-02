@@ -40,8 +40,18 @@ public class Calibrate extends Command {
 		Scheduler.getInstance().run();
 		if (Math.abs(Robot.driveTrain.getAngle(Robot.driveTrain.gyro)) < threshold)
 			return true;
+		float scaleLeft;
+		// s1/s2 = w/d + 1 
+		
 			
 		return false;
+	}
+	private boolean calibrateRotateEncoder(){
+
+
+
+	return false;
+
 	}
 
 	private boolean calibrateVelocityToPower() {
