@@ -35,7 +35,7 @@ public class DriveTrain extends Subsystem {
 	// front or back
 
 	private static final int encoderCount = 2;
-	public Encoder[] encoder = new Encoder[encoderCount];
+	public Encoder[] encoders = new Encoder[encoderCount];
 
 	private static final int gyroPort = 2;
 	public AnalogGyro gyro;
@@ -49,10 +49,10 @@ public class DriveTrain extends Subsystem {
 			LiveWindow.addActuator("DriveTrain", String.valueOf(i), (Victor) driveCim[i]);
 		}
 
-		encoder[1] = new Encoder(1, 2, true, EncodingType.k4X);
-		encoder[0] = new Encoder(3, 4, false, EncodingType.k4X);
-		encoder[1].setPIDSourceType(PIDSourceType.kDisplacement);
-		encoder[0].setPIDSourceType(PIDSourceType.kDisplacement);
+		encoders[1] = new Encoder(1, 2, true, EncodingType.k4X);
+		encoders[0] = new Encoder(3, 4, false, EncodingType.k4X);
+		encoders[1].setPIDSourceType(PIDSourceType.kDisplacement);
+		encoders[0].setPIDSourceType(PIDSourceType.kDisplacement);
 
 		drive = new RobotDrive(driveCim, driveCimCount);
 		drive.setSafetyEnabled(true);
@@ -76,15 +76,23 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	public void setPower(double output){
-		drive.setArrayMotorOutputs(output);
+		drive.setArrayMotorOutputs(output, output);
 	}
-
+	
 	public void setPower(double[] output){
 		drive.setArrayMotorOutputs(output[0],output[1]);
 	}
+
+	public void setPower(float left , float right){
+		drive.setArrayMotorOutputs(left, right);
+	}
+	
+	public void setPower(float output){
+		drive.setArrayMotorOutputs(output, output);
+	}
 	
 	public void setPower(float[] output){
-		drive.setArrayMotorOutputs((double)output[0],(double)output[1]);
+		drive.setArrayMotorOutputs(output[0],output[1]);
 	}
 	
 	public double getAngle(AnalogGyro gyro){
@@ -102,7 +110,7 @@ public class DriveTrain extends Subsystem {
 
 	public float[] rotateEncoder(float theta, float omega,boolean directionLeft,float threshold) {
 		float[] output = new float[2];
-		if(Math.abs((getDistance(encoder[0]) - getDistance(encoder[1]))) < threshold){
+		if(Math.abs((getDistance(encoders[0]) - getDistance(encoders[1]))) < threshold){
 			output[directionLeft ? 1:0] = 0;
 		}else{
 			output[directionLeft ? 1:0] = omega * width * velocityToPower[directionLeft ? 1:0];
@@ -129,7 +137,7 @@ public class DriveTrain extends Subsystem {
 	
 	public float[] hardDrive(float distance, float velocity, float threshold){
 		float[] output = new float[2];
-		if(Math.abs((getDistance(encoder[0])+getDistance(encoder[1]))/2 - distance) < threshold){
+		if(Math.abs((getDistance(encoders[0])+getDistance(encoders[1]))/2 - distance) < threshold){
 			output[0] = 0;
 			output[1] = output[0];
 		}else{

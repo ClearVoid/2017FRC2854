@@ -92,31 +92,12 @@ public class RobotDrive implements MotorSafety {
 			throw new NullPointerException("Null motor provided");
 		}
 		for (int i = 0; i < motorCount; i++) {
-			m_motors[i].set(
-					(limit(rightOutput) * m_maxOutput) * (i % 2) + (limit(leftOutput) * m_maxOutput) * (1 - i % 2));
+			m_motors[i].set((limit(rightOutput) * m_maxOutput) * (i % 2) + (limit(leftOutput) * m_maxOutput) * (1 - i % 2));
 		} // This is a really good line, much long, very efficient;
 		if (m_safetyHelper != null)
 			m_safetyHelper.feed();
 	}
 
-	public void setArrayMotorOutputs(double output) {
-		boolean motorNull = false;
-		for (int t = 0; t < motorCount; t++) {
-			if (m_motors[t] == null) {
-				motorNull = true;
-			}
-		}
-		if (motorNull == true) {
-			for (int t = 0; t < motorCount; t++) {
-				m_motors[t] = null;
-			}
-			throw new NullPointerException("Null motor provided");
-		}
-		for (int t = 0; t < motorCount; t++) {
-			m_motors[t].set(limit(output) * m_maxOutput);
-		}
-
-	}
 
 	public float[] deltaDrive(double leftPower, double rightPower, float deltaT) {
 		setArrayMotorOutputs(leftPower, rightPower);
