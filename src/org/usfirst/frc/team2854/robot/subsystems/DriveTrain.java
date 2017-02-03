@@ -23,8 +23,8 @@ public class DriveTrain extends Subsystem {
 	public static final float width = 1;// in meters
 	// WIP
 	// **************************************************************************************************************
-	
-	public static final float[] velocityToPower = {1,1};
+
+	public final float[] velocityToPower = { 1, 1 };
 	// Assuming that friction is constant
 	// These constants are obtained thorough the Calibration command;
 	// **************************************************************************************************************
@@ -69,78 +69,101 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public void initDefaultCommand() {
+	
 	}
 
+	public void setVelocityToPower(float[] velocityToPower) {
+		this.velocityToPower[0] = velocityToPower[0];
+		this.velocityToPower[1] = velocityToPower[1];
+	}
+	
 	public void setPower(double left, double right) {
 		drive.setArrayMotorOutputs(left, right);
 	}
-	
-	public void setPower(double output){
+
+	public void setPower(double output) {
 		drive.setArrayMotorOutputs(output, output);
 	}
-	
-	public void setPower(double[] output){
-		drive.setArrayMotorOutputs(output[0],output[1]);
+
+	public void setPower(double[] output) {
+		drive.setArrayMotorOutputs(output[0], output[1]);
 	}
 
-	public void setPower(float left , float right){
+	public void setPower(float left, float right) {
 		drive.setArrayMotorOutputs(left, right);
 	}
-	
-	public void setPower(float output){
+
+	public void setPower(float output) {
 		drive.setArrayMotorOutputs(output, output);
 	}
-	
-	public void setPower(float[] output){
-		drive.setArrayMotorOutputs(output[0],output[1]);
+
+	public void setPower(float[] output) {
+		drive.setArrayMotorOutputs(output[0], output[1]);
 	}
-	
-	public double getAngle(AnalogGyro gyro){
+
+	public void setVelocity(double left, double right) {
+		drive.setArrayMotorOutputs(left * velocityToPower[0], right * velocityToPower[1]);
+	}
+
+	public void setVelocity(float left, float right) {
+		drive.setArrayMotorOutputs(left * velocityToPower[0], right * velocityToPower[1]);
+	}
+
+	public void setVelocity(float[] output) {
+		drive.setArrayMotorOutputs(output[0] * velocityToPower[0], output[1] * velocityToPower[1]);
+
+	}
+
+	public void setVelocity(float output) {
+		drive.setArrayMotorOutputs(output * velocityToPower[0], output * velocityToPower[1]);
+	}
+
+	public double getAngle(AnalogGyro gyro) {
 		return gyro.getAngle();
 	}
-	
-	public double getAngle(Encoder[] encoder){
-		return (getDistance(encoder[1])-getDistance(encoder[0]))/width;
+
+	public double getAngle(Encoder[] encoder) {
+		return (getDistance(encoder[1]) - getDistance(encoder[0])) / width;
 	}
-	
+
 	public double getDistance(Encoder encoder) {
 		return encoder.get() * diameter * 90 / pi;// in meters
-		
+
 	}
 
-	public float[] rotateEncoder(float theta, float omega,boolean directionLeft,float threshold) {
+	public float[] rotateEncoder(float theta, float omega, boolean directionLeft, float threshold) {
 		float[] output = new float[2];
-		if(Math.abs((getDistance(encoders[0]) - getDistance(encoders[1]))) < threshold){
-			output[directionLeft ? 1:0] = 0;
-		}else{
-			output[directionLeft ? 1:0] = omega * width * velocityToPower[directionLeft ? 1:0];
+		if (Math.abs((getDistance(encoders[0]) - getDistance(encoders[1]))) < threshold) {
+			output[directionLeft ? 1 : 0] = 0;
+		} else {
+			output[directionLeft ? 1 : 0] = omega * width * velocityToPower[directionLeft ? 1 : 0];
 		}
 		return output;
 	}
 
-	public float[] rotateGyro(float theta,float omega, boolean directionLeft, float threshold){
+	public float[] rotateGyro(float theta, float omega, boolean directionLeft, float threshold) {
 		float[] output = new float[2];
-		if((gyro.getAngle() - theta) < threshold){
-			output[directionLeft ? 1:0] = 0;
-		}else{
-			output[directionLeft ? 1:0] = omega * width * velocityToPower[directionLeft ? 1:0];
+		if ((gyro.getAngle() - theta) < threshold) {
+			output[directionLeft ? 1 : 0] = 0;
+		} else {
+			output[directionLeft ? 1 : 0] = omega * width * velocityToPower[directionLeft ? 1 : 0];
 		}
 		return output;
 	}
-	
+
 	public float[] driveApproachParameterLinear(float currentX, float targetX, float threshold) {
 		float[] output = new float[2];
 		output[0] = (targetX - currentX) / targetX;
 		output[1] = output[0];
 		return output;
 	}
-	
-	public float[] hardDrive(float distance, float velocity, float threshold){
+
+	public float[] hardDrive(float distance, float velocity, float threshold) {
 		float[] output = new float[2];
-		if(Math.abs((getDistance(encoders[0])+getDistance(encoders[1]))/2 - distance) < threshold){
+		if (Math.abs((getDistance(encoders[0]) + getDistance(encoders[1])) / 2 - distance) < threshold) {
 			output[0] = 0;
 			output[1] = output[0];
-		}else{
+		} else {
 			output[0] = velocityToPower[0] * velocity;
 			output[1] = velocityToPower[1] * velocity;
 		}

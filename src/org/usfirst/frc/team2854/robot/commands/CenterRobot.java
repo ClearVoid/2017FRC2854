@@ -3,6 +3,7 @@ package org.usfirst.frc.team2854.robot.commands;
 import java.math.*;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.*;
 
 import org.usfirst.frc.team2854.robot.Robot;
@@ -13,17 +14,17 @@ public class CenterRobot extends Command {
 	private static DriveTrain driveTrain;
 	private static float targetTheta;
 	private float threshold;
-	private boolean isFinished;
+	private boolean isFinished = false;
 
-	public CenterRobot(float targetTheta, float omega,float threshold) {
-		// driveTrain = Robot.driveTrain;
+	public CenterRobot(float radius, float targetTheta, float veloticy ,float threshold) {
 		requires(Robot.driveTrain);
 		this.targetTheta = targetTheta;
 		this.threshold = threshold;
 		
-		isFinished = false;
 	}
-
+	private void perpRotate(){
+		
+	}
 
 	@Override
 	protected void initialize() {
@@ -35,12 +36,17 @@ public class CenterRobot extends Command {
 		
 		isFinished = true;
 	}
+	
 	@Override
 	protected boolean isFinished() {
 		return isFinished;
 	}
+	
 	@Override
 	protected void end() {
+		Scheduler.getInstance().add(new ResetRobot());
+		Scheduler.getInstance().run();
+		
 	}
 
 	protected void interrupted() {

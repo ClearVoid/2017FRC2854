@@ -30,7 +30,7 @@ public class Robot extends IterativeRobot {
 	public static AnalogGyro gyro;
 	//subsystems
 	public static DriveTrain driveTrain;
-	public static ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
+	//public static ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	//initialize commands
 	Command resetThisRobot = new ResetRobot();
 	Command autonomousCommand;
@@ -49,6 +49,8 @@ public class Robot extends IterativeRobot {
     	gyro = new AnalogGyro(gyroPort);
     	driveTrain = new DriveTrain();
     	
+    	Scheduler.getInstance().add(new Calibrate(0.05f,0.5f,0.01f,0.01f));
+    	Scheduler.getInstance().run();
     }
 	
     public void disabledInit(){
@@ -62,6 +64,7 @@ public class Robot extends IterativeRobot {
     }
 	
 	public void disabledPeriodic(){
+		
 		Scheduler.getInstance().run();
 	}
 	
@@ -85,6 +88,7 @@ public class Robot extends IterativeRobot {
     }
     
     public void teleopPeriodic(){
+    	
         Scheduler.getInstance().run();
     }
     

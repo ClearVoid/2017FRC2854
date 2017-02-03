@@ -10,15 +10,20 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 
 public class Calibrate extends Command {
-	private float[] velocityToPower = { 1, 1 };
+	private float[] currentVelocityToPower = { 1, 1 };
 	private float velocity = 0.05f;
 	private float deltaT = 0.5f;
-	private float threshold = 0.01f;
+	private float encoderThreshold = 0.01f;
+	private float gyroThreshold = 0.01f;
 
 	private static boolean isFinished = false;
 
-	public Calibrate() {
+	public Calibrate(float velocity, float deltaT, float threshold, float threshold2) {
 		requires(Robot.driveTrain);
+		this.velocity = velocity;
+		this.deltaT = deltaT;
+		this.encoderThreshold = threshold;
+		this.gyroThreshold = threshold2;
 	}
 
 	private static float[] limit(float[] input) {
@@ -36,7 +41,7 @@ public class Calibrate extends Command {
 	}
 
 	private boolean checkRotate(AnalogGyro gyro) {
-		if (gyro.getAngle() < threshold)
+		if (gyro.getAngle() < gyroThreshold)
 			return true;
 		return false;
 	}
@@ -44,9 +49,9 @@ public class Calibrate extends Command {
 	private boolean calibrateVelocityToPower(Encoder[] encoders) {
 		boolean calibrated = true;
 		for (int i = 0; i < 2; i++) {
-			if (Math.abs(Robot.driveTrain.getDistance(encoders[i]) - velocity * deltaT) > threshold) {
+			if (Math.abs(Robot.driveTrain.getDistance(encoders[i]) - velocity * deltaT) > encoderThreshold) {
 				calibrated = false;
-				velocityToPower[i] = (float) (velocity * deltaT / Robot.driveTrain.getDistance(encoders[i]));
+				currentVelocityToPower[i] = (float) (velocity * deltaT / Robot.driveTrain.getDistance(encoders[i]));
 			}
 		}
 		return calibrated;
@@ -55,21 +60,18 @@ public class Calibrate extends Command {
 	@Override
 	protected void initialize() {
 		Scheduler.getInstance().add(new ResetRobot());
-		Scheduler.getInstance().add(new SetDrive(velocity, velocityToPower));
+		Scheduler.getInstance().add(new SetDrive(velocity, currentVelocityToPower));
 		Scheduler.getInstance().run();
 	}
 
 	@Override
 	protected void execute() {
+		Scheduler.getInstance().add(new ResetRobot());
+		Scheduler.getInstance().run();
 		if (calibrateVelocityToPower(Robot.driveTrain.encoders)) {
-			
-			Scheduler.getInstance().add(new ResetRobot());
-			Scheduler.getInstance().run();
-			
 			if (checkRotate(Robot.driveTrain.gyro)) {
 				isFinished = true;
 			}
-			
 		}
 	}
 
@@ -82,6 +84,7 @@ public class Calibrate extends Command {
 	protected void end() {
 		Scheduler.getInstance().add(new ResetRobot());
 		Scheduler.getInstance().run();
+		Robot.driveTrain.setVelocityToPower(currentVelocityToPower);
 	}
 	
 	@Override	
