@@ -10,13 +10,11 @@ import org.usfirst.frc.team2854.robot.Robot;
 import org.usfirst.frc.team2854.robot.subsystems.*;
 
 public class CenterRobot extends Command {
-	private static int driveTrainType;
-	private static DriveTrain driveTrain;
 	private static float targetTheta;
 	private float threshold;
 	private boolean isFinished = false;
 
-	public CenterRobot(float radius, float targetTheta, float veloticy ,float threshold) {
+	public CenterRobot(float radius, float targetTheta, float velocity ,float threshold) {
 		requires(Robot.driveTrain);
 		this.targetTheta = targetTheta;
 		this.threshold = threshold;

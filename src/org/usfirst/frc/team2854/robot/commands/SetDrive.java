@@ -14,10 +14,10 @@ public class SetDrive extends Command{
 		this.power[0] = power;
 		this.power[1] = power;
 	}
-	public SetDrive(float velocity, float[] velocityToPower){
+	public SetDrive(float velocity){
 		requires(Robot.driveTrain);
-		power[0] = velocity * velocityToPower[0];
-		power[1] = velocity * velocityToPower[1];
+		power[0] = velocity * Robot.driveTrain.velocityToPower[0];
+		power[1] = velocity * Robot.driveTrain.velocityToPower[1];
 	}
 	
 	@Override

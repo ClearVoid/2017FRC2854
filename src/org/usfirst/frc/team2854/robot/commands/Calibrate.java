@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 
 public class Calibrate extends Command {
-	private float[] currentVelocityToPower = { 1, 1 };
 	private float velocity = 0.05f;
 	private float deltaT = 0.5f;
 	private float encoderThreshold = 0.01f;
@@ -51,7 +50,7 @@ public class Calibrate extends Command {
 		for (int i = 0; i < 2; i++) {
 			if (Math.abs(Robot.driveTrain.getDistance(encoders[i]) - velocity * deltaT) > encoderThreshold) {
 				calibrated = false;
-				currentVelocityToPower[i] = (float) (velocity * deltaT / Robot.driveTrain.getDistance(encoders[i]));
+				Robot.driveTrain.velocityToPower[i] = (float) (velocity * deltaT / Robot.driveTrain.getDistance(encoders[i]));
 			}
 		}
 		return calibrated;
@@ -60,7 +59,7 @@ public class Calibrate extends Command {
 	@Override
 	protected void initialize() {
 		Scheduler.getInstance().add(new ResetRobot());
-		Scheduler.getInstance().add(new SetDrive(velocity, currentVelocityToPower));
+		Scheduler.getInstance().add(new SetDrive(velocity));
 		Scheduler.getInstance().run();
 	}
 
@@ -84,7 +83,6 @@ public class Calibrate extends Command {
 	protected void end() {
 		Scheduler.getInstance().add(new ResetRobot());
 		Scheduler.getInstance().run();
-		Robot.driveTrain.setVelocityToPower(currentVelocityToPower);
 	}
 	
 	@Override	

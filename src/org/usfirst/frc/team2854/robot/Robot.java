@@ -92,13 +92,7 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
     }
     
-    public void testPeriodic() {   
-    	/**
-         * This function is called periodically during test mode
-         */
-        LiveWindow.run();
+    public void testPeriodic(){
+    	LiveWindow.run();
     }
-    
-    
-
 }

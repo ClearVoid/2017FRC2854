@@ -81,28 +81,36 @@ public class DriveTrain extends Subsystem {
 		drive.setArrayMotorOutputs(left, right);
 	}
 
+	public void setPower(double[] output) {
+		drive.setArrayMotorOutputs(output[0], output[1]);
+	}
+	
 	public void setPower(double output) {
 		drive.setArrayMotorOutputs(output, output);
 	}
 
-	public void setPower(double[] output) {
-		drive.setArrayMotorOutputs(output[0], output[1]);
-	}
-
 	public void setPower(float left, float right) {
 		drive.setArrayMotorOutputs(left, right);
+	}
+	
+	public void setPower(float[] output) {
+		drive.setArrayMotorOutputs(output[0], output[1]);
 	}
 
 	public void setPower(float output) {
 		drive.setArrayMotorOutputs(output, output);
 	}
 
-	public void setPower(float[] output) {
-		drive.setArrayMotorOutputs(output[0], output[1]);
-	}
-
 	public void setVelocity(double left, double right) {
 		drive.setArrayMotorOutputs(left * velocityToPower[0], right * velocityToPower[1]);
+	}
+	
+	public void setVelocity(double[] output){
+		drive.setArrayMotorOutputs(output[0] * velocityToPower[0], output[1] * velocityToPower[1]);
+	}
+	
+	public void setVelocity(double output){
+		drive.setArrayMotorOutputs(output * velocityToPower[0], output * velocityToPower[1]);
 	}
 
 	public void setVelocity(float left, float right) {
@@ -111,7 +119,6 @@ public class DriveTrain extends Subsystem {
 
 	public void setVelocity(float[] output) {
 		drive.setArrayMotorOutputs(output[0] * velocityToPower[0], output[1] * velocityToPower[1]);
-
 	}
 
 	public void setVelocity(float output) {
@@ -126,6 +133,8 @@ public class DriveTrain extends Subsystem {
 		return (getDistance(encoder[1]) - getDistance(encoder[0])) / width;
 	}
 
+	
+	
 	public double getDistance(Encoder encoder) {
 		return encoder.get() * diameter * 90 / pi;// in meters
 
