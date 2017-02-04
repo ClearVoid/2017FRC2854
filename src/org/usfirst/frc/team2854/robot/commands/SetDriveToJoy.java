@@ -12,7 +12,6 @@ public class SetDriveToJoy extends Command{
 	public SetDriveToJoy(float maxVelocity){
 		requires(Robot.driveTrain);
 		this.maxVelocity = maxVelocity;
-		
 	}
 	@Override
 	protected void execute(){
