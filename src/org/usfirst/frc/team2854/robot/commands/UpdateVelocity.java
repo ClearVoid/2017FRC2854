@@ -2,20 +2,17 @@ package org.usfirst.frc.team2854.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-import org.usfirst.frc.team2854.robot.subsystems.*;
 import org.usfirst.frc.team2854.robot.Robot;
 import org.usfirst.frc.team2854.robot.commands.*;
+import org.usfirst.frc.team2854.robot.subsystems.*;
 
 
-public class Rotate extends Command{
+public class UpdateVelocity extends Command{
 	private boolean isFinished = false;
-	private float targetTheta;
-	private float velocity;
-	
-	public Rotate(float targetTheta, float omega, int port){
+	private float[][] velocities;
+	public UpdateVelocity(int portCount){
 		requires(Robot.driveTrain);
-		this.targetTheta = targetTheta;
-		velocity = omega * DriveTrain.width;
+		velocities = new float[2][portCount];
 	}
 	
 	@Override
@@ -23,15 +20,8 @@ public class Rotate extends Command{
 		isFinished = true;
 	}
 	
-	@Override 
+	@Override
 	protected boolean isFinished(){
 		return isFinished;
 	}
-
-	@Override
-	protected void end(){
-		
-	}
-	
-
 }

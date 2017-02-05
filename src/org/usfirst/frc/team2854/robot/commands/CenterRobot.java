@@ -20,9 +20,6 @@ public class CenterRobot extends Command {
 		this.threshold = threshold;
 		
 	}
-	private void perpRotate(){
-		
-	}
 
 	@Override
 	protected void initialize() {

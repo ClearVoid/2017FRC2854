@@ -81,6 +81,7 @@ public class Calibrate extends Command {
 
 	@Override
 	protected void end() {
+		limit(Robot.driveTrain.velocityToPower);
 		Scheduler.getInstance().add(new ResetRobot());
 		Scheduler.getInstance().run();
 	}

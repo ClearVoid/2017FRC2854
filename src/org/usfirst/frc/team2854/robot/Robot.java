@@ -32,17 +32,16 @@ public class Robot extends IterativeRobot {
 	public static DriveTrain driveTrain;
 	//public static ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	//initialize commands
-	Command resetThisRobot = new ResetRobot();
 	Command autonomousCommand;
-	
+	Command updateDrive = new UpdateDrive(2);
     SendableChooser chooser;
 
     
     public void robotInit(){
     	oi = new OI();
     	chooser = new SendableChooser();
-    	chooser.addDefault("Default Auto", new ExampleCommand());
-//      chooser.addObject("My Auto", new MyAutoCommand());
+    	chooser.addDefault("Default Auto", new Auto());
+    	chooser.addObject("My Auto", new Auto());
     	SmartDashboard.putData("Auto mode", chooser);
     	for(int i = 0; i < stickCount; i++){stick[i] = new Joystick(stickPorts[i]);}
     	
@@ -59,7 +58,7 @@ public class Robot extends IterativeRobot {
          * You can use it to reset any subsystem information you want to clear when
     	 * the robot is disabled.
          */
-    	Scheduler.getInstance().add(resetThisRobot);
+    	Scheduler.getInstance().add(new ResetRobot());
 		Scheduler.getInstance().run();
     }
 	
@@ -69,7 +68,7 @@ public class Robot extends IterativeRobot {
 	}
 	
     public void autonomousInit(){
-    	Scheduler.getInstance().add(resetThisRobot);
+    	Scheduler.getInstance().add(new ResetRobot());
         autonomousCommand = (Command) chooser.getSelected();
         
         
@@ -82,7 +81,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void teleopInit() {
-    	Scheduler.getInstance().add(resetThisRobot);
+    	Scheduler.getInstance().add(new ResetRobot());
     	
         if (autonomousCommand != null) autonomousCommand.cancel();  
     }
