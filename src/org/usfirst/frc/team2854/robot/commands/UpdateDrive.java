@@ -16,6 +16,16 @@ public class UpdateDrive extends Command{
 		powers = new float[2][portCount];
 		this.portCount = portCount;
 	}
+
+	public void clearPort(int port){
+		powers[0][port] = 0;
+		powers[1][port] = 0;
+	}
+	
+	public void addPower(float[] input, int port){
+		powers[0][port] = input[0];
+		powers[1][port] = input[1];
+	}
 	
 	private float[] sumPower(){
 		float[] power = new float[2];

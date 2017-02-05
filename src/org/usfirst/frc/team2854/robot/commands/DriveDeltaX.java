@@ -18,16 +18,19 @@ public class DriveDeltaX extends Command{
 		this.deltaX = deltaX;
 		this.threshold = threshold;
 	}
+	
 	@Override 
 	protected void initialize(){
 		Scheduler.getInstance().add(new ResetRobot());
 		Scheduler.getInstance().run();
 		Robot.driveTrain.setVelocity(velocity);
 	}
+	
 	@Override 
 	protected boolean isFinished(){
 		return (Math.abs(Robot.driveTrain.getDistance(Robot.driveTrain.encoders[0]) - deltaX) < threshold);
 	}
+	
 	@Override
 	protected void end(){
 		Robot.driveTrain.setVelocity(0);

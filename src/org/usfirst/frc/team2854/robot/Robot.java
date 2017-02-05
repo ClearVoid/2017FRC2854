@@ -12,16 +12,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.AnalogGyro;
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the IterativeRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the manifest file in the resource
- * directory.
- */
+//All of this is hypothetical as of now
 public class Robot extends IterativeRobot {
+    SendableChooser chooser;
 	//ports
-	int stickPorts[] = {0,1};
+	private static int stickPorts[] = {0,1};
 	public static int gyroPort = 2;
 	//Things
 	private static int stickCount = 2;
@@ -33,22 +28,26 @@ public class Robot extends IterativeRobot {
 	//public static ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	//initialize commands
 	Command autonomousCommand;
-	Command updateDrive = new UpdateDrive(2);
-    SendableChooser chooser;
+	private static int portCount = 3;
+	public static UpdateDrive updateDrive = new UpdateDrive(portCount);
+	public static UpdateVelocity updateVelocity = new UpdateVelocity(portCount);
+	public static Calibrate calibrate = new Calibrate(0.05f,0.5f,0.01f,0.01f,0);
+	//port 0: Calibrate
+	//port 1: Drive
+	//port 2: Rotate
 
-    
     public void robotInit(){
     	oi = new OI();
     	chooser = new SendableChooser();
-    	chooser.addDefault("Default Auto", new Auto());
-    	chooser.addObject("My Auto", new Auto());
+    //	chooser.addDefault("Default Auto", new Auto());
+    //	chooser.addObject("My Auto", new Auto());
     	SmartDashboard.putData("Auto mode", chooser);
     	for(int i = 0; i < stickCount; i++){stick[i] = new Joystick(stickPorts[i]);}
     	
     	gyro = new AnalogGyro(gyroPort);
     	driveTrain = new DriveTrain();
     	
-    	Scheduler.getInstance().add(new Calibrate(0.05f,0.5f,0.01f,0.01f));
+    	Scheduler.getInstance().add(calibrate);
     	Scheduler.getInstance().run();
     }
 	
@@ -76,7 +75,8 @@ public class Robot extends IterativeRobot {
     }
 
     public void autonomousPeriodic(){
-    	
+
+    	Scheduler.getInstance().add(updateVelocity);
         Scheduler.getInstance().run();
     }
 
@@ -87,7 +87,7 @@ public class Robot extends IterativeRobot {
     }
     
     public void teleopPeriodic(){
-    	
+    	Scheduler.getInstance().add(updateVelocity);
         Scheduler.getInstance().run();
     }
     

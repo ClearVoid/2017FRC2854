@@ -1,8 +1,6 @@
 package org.usfirst.frc.team2854.robot.commands;
 
 import org.usfirst.frc.team2854.robot.Robot;
-import org.usfirst.frc.team2854.robot.subsystems.*;
-import org.usfirst.frc.team2854.robot.commands.*;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -14,15 +12,18 @@ public class Calibrate extends Command {
 	private float deltaT = 0.5f;
 	private float encoderThreshold = 0.01f;
 	private float gyroThreshold = 0.01f;
+	
+	private int port;
 
 	private static boolean isFinished = false;
 
-	public Calibrate(float velocity, float deltaT, float threshold, float threshold2) {
+	public Calibrate(float velocity, float deltaT, float threshold, float threshold2, int port) {
 		requires(Robot.driveTrain);
 		this.velocity = velocity;
 		this.deltaT = deltaT;
 		this.encoderThreshold = threshold;
 		this.gyroThreshold = threshold2;
+		this.port = port;
 	}
 
 	private static float[] limit(float[] input) {
@@ -59,7 +60,7 @@ public class Calibrate extends Command {
 	@Override
 	protected void initialize() {
 		Scheduler.getInstance().add(new ResetRobot());
-		Scheduler.getInstance().add(new SetDrive(velocity));
+		Scheduler.getInstance().add(new SetVelocity(velocity,port));
 		Scheduler.getInstance().run();
 	}
 
@@ -82,6 +83,7 @@ public class Calibrate extends Command {
 	@Override
 	protected void end() {
 		limit(Robot.driveTrain.velocityToPower);
+		System.out.println(Robot.driveTrain.velocityToPower);
 		Scheduler.getInstance().add(new ResetRobot());
 		Scheduler.getInstance().run();
 	}

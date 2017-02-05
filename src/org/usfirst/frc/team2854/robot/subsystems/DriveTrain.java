@@ -21,7 +21,7 @@ public class DriveTrain extends Subsystem {
 	private static final float pi = 3.1415926553589323f;
 	// /private static final float e = 2.718281828459045235f;
 	public static final float width = 1;// in meters
-	public final float[] velocityToPower = { 1, 1 };
+	public float[] velocityToPower = { 1, 1 };
 	// These constants are obtained thorough the Calibration command;
 	private static final int driveCimCount = 4;
 	private SpeedController[] driveCim = new SpeedController[driveCimCount];
@@ -64,8 +64,8 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public void initDefaultCommand() {
+		
 	}
-
 
 	public void setPower(double left, double right) {
 		drive.setArrayMotorOutputs(left, right);
@@ -119,13 +119,24 @@ public class DriveTrain extends Subsystem {
 		return gyro.getAngle();
 	}
 
-	public double getAngle(Encoder[] encoder) {
-		return (getDistance(encoder[1]) - getDistance(encoder[0])) / width;
+	public double getAngle() {
+		return (getDistance(encoders[1]) - getDistance(encoders[0])) / width;
+	}
+	
+	public double getDistance(Encoder encoder){
+		return (encoder.get()) * diameter * 90 / pi / 2;
 	}
 
-	public double getDistance(Encoder encoder) {
-		return encoder.get() * diameter * 90 / pi;// in meters
-
+	public double getAvgDistance() {
+		return (encoders[0].get() + encoders[1].get() ) * diameter * 90 / pi / 2;/// in meter
+	}
+	
+	public double[] getDistances(Encoder[] encoder){
+		double[] output = new double[2];
+		output[0] = (encoder[0].get()) * diameter * 90 / pi / 2;
+		output[1] = (encoder[1].get()) * diameter * 90 / pi / 2;
+		
+		return output;
 	}
 
 }
