@@ -32,12 +32,13 @@ public class Robot extends IterativeRobot {
 	public static UpdateDrive updateDrive = new UpdateDrive(portCount);
 	public static UpdateVelocity updateVelocity = new UpdateVelocity(portCount);
 	public static Calibrate calibrate = new Calibrate(0.05f,0.5f,0.01f,0.01f,0);
+	
 	//port 0: Calibrate
 	//port 1: Drive
 	//port 2: Rotate
 
     public void robotInit(){
-    	oi = new OI();
+    	oi = new OI(stick);
     	chooser = new SendableChooser();
     //	chooser.addDefault("Default Auto", new Auto());
     //	chooser.addObject("My Auto", new Auto());
@@ -92,6 +93,7 @@ public class Robot extends IterativeRobot {
     }
     
     public void testPeriodic(){
+    	System.out.println("Test test, Krystal is short af");
     	LiveWindow.run();
     }
 }
