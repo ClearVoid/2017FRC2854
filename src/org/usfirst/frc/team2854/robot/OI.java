@@ -13,7 +13,6 @@ public class OI {
 	public OI(Joystick[] stick){
 		this.stick[0] = stick[0];
 		this.stick[1] = stick[1];
-		
 	}
 	Button button = new JoystickButton(stick[0],0);
 

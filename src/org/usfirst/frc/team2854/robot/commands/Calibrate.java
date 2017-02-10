@@ -13,17 +13,17 @@ public class Calibrate extends Command {
 	private float encoderThreshold = 0.01f;
 	private float gyroThreshold = 0.01f;
 	
-	private int port;
+	private int velocitySocket;
 
 	private static boolean isFinished = false;
 
-	public Calibrate(float velocity, float deltaT, float threshold, float threshold2, int port) {
+	public Calibrate(float velocity, float deltaT, float threshold, float threshold2, int velocitySocket) {
 		requires(Robot.driveTrain);
 		this.velocity = velocity;
 		this.deltaT = deltaT;
 		this.encoderThreshold = threshold;
 		this.gyroThreshold = threshold2;
-		this.port = port;
+		this.velocitySocket = velocitySocket;
 	}
 
 	private static float[] limit(float[] input) {
@@ -60,7 +60,8 @@ public class Calibrate extends Command {
 	@Override
 	protected void initialize() {
 		Scheduler.getInstance().add(new ResetRobot());
-		Scheduler.getInstance().add(new SetVelocity(velocity,port));
+		Scheduler.getInstance().add(new SetVelocity(velocity,velocitySocket));
+		
 		Scheduler.getInstance().run();
 	}
 

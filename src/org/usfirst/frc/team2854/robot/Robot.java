@@ -28,14 +28,15 @@ public class Robot extends IterativeRobot {
 	//public static ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	//initialize commands
 	Command autonomousCommand;
-	private static int portCount = 3;
-	public static UpdateDrive updateDrive = new UpdateDrive(portCount);
-	public static UpdateVelocity updateVelocity = new UpdateVelocity(portCount);
+	private static int socketCount = 3;
+	public static UpdateDrive updateDrive = new UpdateDrive(socketCount);
+	public static UpdateVelocity updateVelocity = new UpdateVelocity(socketCount);
 	public static Calibrate calibrate = new Calibrate(0.05f,0.5f,0.01f,0.01f,0);
 	
-	//port 0: Calibrate
-	//port 1: Drive
-	//port 2: Rotate
+	//velocitySocket 0: Calibrate
+	//velocitySocket 1 : Drive
+	//velocitySocket 2 : Rotate
+	//velocitySocket 3; CenterRobot;
 
     public void robotInit(){
     	oi = new OI(stick);

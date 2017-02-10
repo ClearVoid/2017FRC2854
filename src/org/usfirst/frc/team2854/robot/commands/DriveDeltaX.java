@@ -9,14 +9,19 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
 public class DriveDeltaX extends Command{
-	private float velocity;
+	private float velocity = 1;//defulatVelocity
 	private float deltaX;
-	private float threshold;
-	public DriveDeltaX(float velocity, float deltaX, float threshold){
+	private int velocitySocket;
+	public DriveDeltaX(float velocity, float deltaX, int velocitySocket){
 		requires(Robot.driveTrain);
 		this.velocity = velocity;
 		this.deltaX = deltaX;
-		this.threshold = threshold;
+		this.velocity = velocitySocket;
+	}
+	public DriveDeltaX(float deltaX, int velocitySocket){
+		requires(Robot.driveTrain);
+		this.deltaX = deltaX;
+		this.velocity = velocitySocket; 
 	}
 	
 	@Override 
@@ -28,7 +33,7 @@ public class DriveDeltaX extends Command{
 	
 	@Override 
 	protected boolean isFinished(){
-		return (Math.abs(Robot.driveTrain.getDistance(Robot.driveTrain.encoders[0]) - deltaX) < threshold);
+		return (Robot.driveTrain.getDistance(Robot.driveTrain.encoders[0]) < deltaX);
 	}
 	
 	@Override
