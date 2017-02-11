@@ -12,7 +12,7 @@ public class DriveDeltaX extends Command{
 	private float velocity = 1;//defulatVelocity
 	private float deltaX;
 	private int velocitySocket;
-	public DriveDeltaX(float velocity, float deltaX, int velocitySocket){
+	public DriveDeltaX( float deltaX, float velocity, int velocitySocket){
 		requires(Robot.driveTrain);
 		this.velocity = velocity;
 		this.deltaX = deltaX;
