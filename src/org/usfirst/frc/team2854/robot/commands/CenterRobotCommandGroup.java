@@ -10,35 +10,21 @@ public class CenterRobotCommandGroup extends CommandGroup {
 	private boolean simple = true;
 	private float arbitraryDistance = 1;
 	private float targetDistance =  1;//Distance away from the target
+	//lmao
 	
-	public CenterRobotCommandGroup(float displaceTheta,float radius,int velocitySocket){
+	public CenterRobotCommandGroup(float displaceTheta, Float velocity,float radius, int velocitySocket){
 		if(simple){
-			addSequential(new Rotate(pi/2, defaultVelocity/Robot.driveTrain.width, velocitySocket));
-			addSequential(new DriveDeltaX((float) Math.sin(displaceTheta) * radius,defaultVelocity,velocitySocket));
-			addSequential(new Rotate(pi/2, defaultVelocity/Robot.driveTrain.width, velocitySocket));
-			addSequential(new DriveDeltaX((float) Math.cos(displaceTheta) * radius, defaultVelocity, velocitySocket));
+			addSequential(new Rotate(pi/2, ((velocity == null) ? defaultVelocity : velocity)/Robot.driveTrain.width, velocitySocket));
+			addSequential(new SetVelocity((float) Math.sin(displaceTheta) * radius,velocity,velocitySocket));
+			addSequential(new Rotate(pi/2,((velocity == null) ? defaultVelocity : velocity)/Robot.driveTrain.width, velocitySocket));
+			addSequential(new SetVelocity((float) Math.cos(displaceTheta) * radius, velocity, velocitySocket));
 		}else{
-			addSequential(new Rotate(displaceTheta, defaultVelocity/Robot.driveTrain.width,velocitySocket));
-			addSequential(new DriveDeltaX((float) arbitraryDistance, defaultVelocity,velocitySocket));
-			addSequential(new Rotate(pi/2 - displaceTheta, defaultVelocity/Robot.driveTrain.width,velocitySocket));
-			addSequential(new DriveDeltaX((float)(Math.sin(displaceTheta) * radius) * (1 - (arbitraryDistance/radius)),defaultVelocity,velocitySocket));
-			addSequential(new Rotate(-pi/2,defaultVelocity/Robot.driveTrain.width,velocitySocket));
-			addSequential(new DriveDeltaX((float)Math.cos(displaceTheta) * arbitraryDistance  - targetDistance, defaultVelocity,velocitySocket));
-		}
-	}
-	public CenterRobotCommandGroup(float displaceTheta,float velocity,float radius, int velocitySocket){
-		if(simple){
-			addSequential(new Rotate(pi/2, velocity/Robot.driveTrain.width, velocitySocket));
-			addSequential(new DriveDeltaX((float) Math.sin(displaceTheta) * radius,velocity,velocitySocket));
-			addSequential(new Rotate(pi/2, velocity/Robot.driveTrain.width, velocitySocket));
-			addSequential(new DriveDeltaX((float) Math.cos(displaceTheta) * radius, velocity, velocitySocket));
-		}else{
-			addSequential(new Rotate(displaceTheta, velocity/Robot.driveTrain.width,velocitySocket));
-			addSequential(new DriveDeltaX((float) arbitraryDistance, velocity,velocitySocket));
-			addSequential(new Rotate(pi/2 - displaceTheta, velocity/Robot.driveTrain.width,velocitySocket));
-			addSequential(new DriveDeltaX((float)(Math.sin(displaceTheta) * radius) * (1 - (arbitraryDistance/radius)),velocity,velocitySocket));
+			addSequential(new Rotate(displaceTheta, ((velocity == null) ? defaultVelocity : velocity)/Robot.driveTrain.width,velocitySocket));
+			addSequential(new SetVelocity((float) arbitraryDistance,((velocity == null) ? defaultVelocity : velocity),velocitySocket));
+			addSequential(new Rotate(pi/2 - displaceTheta, ((velocity == null) ? defaultVelocity : velocity)/Robot.driveTrain.width,velocitySocket));
+			addSequential(new SetVelocity((float)(Math.sin(displaceTheta) * radius) * (1 - (arbitraryDistance/radius)),((velocity == null) ? defaultVelocity : velocity),velocitySocket));
 			addSequential(new Rotate(-pi/2,velocity/Robot.driveTrain.width,velocitySocket));
-			addSequential(new DriveDeltaX((float)Math.cos(displaceTheta) * arbitraryDistance  - targetDistance,velocity,velocitySocket));
+			addSequential(new SetVelocity((float)Math.cos(displaceTheta) * arbitraryDistance  - targetDistance,((velocity == null) ? defaultVelocity : velocity),velocitySocket));
 		}
 	}
 }

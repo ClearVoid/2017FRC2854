@@ -16,14 +16,14 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 public class Robot extends IterativeRobot {
     SendableChooser chooser;
 	//ports
-	private static int stickPorts[] = {0,1};
+	private static int stickPorts[] = {0,1,2,3};
 	public static int gyroPort = 2;
 	//Things
 	private static int stickCount = 2;
 	public static Joystick stick[] = new Joystick[stickCount];//stick[0] would be the teleop, and stick[1] would be something else I suppose?
 	public static OI oi;
 	public static AnalogGyro gyro;
-	//subsystems
+	//subsystems 
 	public static DriveTrain driveTrain;
 	//public static ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	//initialize commands
@@ -34,9 +34,10 @@ public class Robot extends IterativeRobot {
 	public static Calibrate calibrate = new Calibrate(0.05f,0.5f,0.01f,0.01f,0);
 	
 	//velocitySocket 0: Calibrate
-	//velocitySocket 1 : Drive
-	//velocitySocket 2 : Rotate
-	//velocitySocket 3; CenterRobot;
+	//velocitySocket 1: Drive
+	//velocitySocket 2: Rotate
+	//velocitySocket 3: CenterRobot;
+	//velocitySocket 4: teleOP;
 
     public void robotInit(){
     	oi = new OI(stick);
@@ -87,14 +88,17 @@ public class Robot extends IterativeRobot {
     	
         if (autonomousCommand != null) autonomousCommand.cancel();  
     }
-    
+    float[] joystickInputs;
     public void teleopPeriodic(){
+    	joystickInputs[0] = (float) stick[0].getY();
+    	joystickInputs[1] = (float) stick[1].getY();
+    	updateVelocity.addVelocity(joystickInputs, 4);
     	Scheduler.getInstance().add(updateVelocity);
         Scheduler.getInstance().run();
     }
     
     public void testPeriodic(){
-    	System.out.println("Test test, Krystal is short af");
+    	System.out.println("Test test, Krystal is short");
     	LiveWindow.run();
     }
 }
