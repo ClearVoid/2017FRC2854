@@ -1,3 +1,4 @@
+//KEVIN ZHENG 2854 PROJECT
 package org.usfirst.frc.team2854.robot;
 
 import org.usfirst.frc.team2854.robot.commands.*;
@@ -50,11 +51,9 @@ public class Robot extends IterativeRobot {
     	for(int i = 0; i < stickCount; i++){stick[i] = new Joystick(stickPorts[i]);}
     	
     	//gyro = new AnalogGyro(gyroPort);
-    	driveTrain = new DriveTrain(RobotMap.driveTALON, 1); 
+    	driveTrain = new DriveTrain(RobotMap.driveTALON, 4); 
     	climb =  new Climb(RobotMap.climbTALON,2);
     	
-    	//Scheduler.getInstance().add(calibrate);
-    	//Scheduler.getInstance().run();
     }
 	 
     public void disabledInit(){
@@ -86,7 +85,7 @@ public class Robot extends IterativeRobot {
 
     public void teleopInit() {
     	//Scheduler.getInstance().add(new ResetRobot());
-    	//Scheduler.getInstance().add(new DriveCommand(driveTrain, oi));
+    	Scheduler.getInstance().add(new DriveCommand(driveTrain, oi));
     	Scheduler.getInstance().add(new SetClimb(climb,oi));
        // if (autonomousCommand != null) autonomousCommand.cancel();  
     }

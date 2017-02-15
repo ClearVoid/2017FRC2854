@@ -19,8 +19,8 @@ public class DriveCommand  extends Command{
 	@Override
 	protected void execute() {
 		
-		train.setPower(oi.controller0.aly.get(),oi.controller0.ary.get());
-	
+		train.setPower(oi.controller0.ary.get(),-oi.controller0.aly.get());
+	//I know it doesn't make sense. Just for testing;
 	}
 	
 	@Override
