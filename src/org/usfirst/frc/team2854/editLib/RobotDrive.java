@@ -89,7 +89,7 @@ public class RobotDrive implements MotorSafety {
 			throw new NullPointerException("Null motor provided");
 		}
 		for (int i = 0; i < motorCount; i++) {
-			m_motors[i].set((limit(rightOutput) * m_maxOutput) * (i % 2) + (limit(leftOutput) * m_maxOutput) * (1 - i % 2));
+			m_motors[i].set((limit(rightOutput) * m_maxOutput) * (1-i % 2) + (limit(leftOutput) * m_maxOutput) * (i % 2));
 		}
 		if (m_safetyHelper != null)
 			m_safetyHelper.feed();

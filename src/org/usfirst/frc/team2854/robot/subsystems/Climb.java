@@ -35,7 +35,6 @@ public class Climb extends Subsystem{
 	public void setPower(double output){
 		drive.setMotorOutput(0, output);
 		drive.setMotorOutput(1, output);
-		
 	}
 
 	@Override

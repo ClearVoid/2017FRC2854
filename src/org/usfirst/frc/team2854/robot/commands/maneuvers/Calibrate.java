@@ -1,6 +1,7 @@
-package org.usfirst.frc.team2854.robot.commands;
+package org.usfirst.frc.team2854.robot.commands.maneuvers;
 
 import org.usfirst.frc.team2854.robot.Robot;
+import org.usfirst.frc.team2854.robot.commands.ResetRobot;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;

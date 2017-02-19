@@ -2,6 +2,7 @@
 package org.usfirst.frc.team2854.robot;
 
 import org.usfirst.frc.team2854.robot.commands.*;
+import org.usfirst.frc.team2854.robot.commands.maneuvers.*;
 import org.usfirst.frc.team2854.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 public class Robot extends IterativeRobot {
     SendableChooser<Command> chooser;
 	private Command autonomousCommand;
+	private RMap rmap = new RMap();
 	//ports
 	private static int stickPorts[] = {0,1,2,3};
 	public static int gyroPort = 2;
@@ -44,15 +46,14 @@ public class Robot extends IterativeRobot {
     public void robotInit(){
     	oi = new OI();
     	chooser = new SendableChooser<Command>();
-    	new RobotMap();
     //	chooser.addDefault("Default Auto", new Auto());
     //	chooser.addObject("My Auto", new Auto());
     	 SmartDashboard.putData("Auto mode", chooser);
     	for(int i = 0; i < stickCount; i++){stick[i] = new Joystick(stickPorts[i]);}
     	
     	//gyro = new AnalogGyro(gyroPort);
-    	driveTrain = new DriveTrain(RobotMap.driveTALON, 4); 
-    	climb =  new Climb(RobotMap.climbTALON,2);
+    	driveTrain = new DriveTrain(RMap.TALON, 4); 
+    	climb =  new Climb(RMap.CLIMBTALON,2);
     	
     }
 	 
