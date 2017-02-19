@@ -8,7 +8,8 @@ import org.usfirst.frc.team2854.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import Networking.*;
-import Visual.*;
+
+import Networking.*;
 
 public class DriveCommand extends Command {
 

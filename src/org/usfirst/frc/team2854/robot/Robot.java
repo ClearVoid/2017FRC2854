@@ -2,6 +2,7 @@
 package org.usfirst.frc.team2854.robot;
 
 import org.usfirst.frc.team2854.robot.commands.*;
+import org.usfirst.frc.team2854.robot.commands.auto.*;
 import org.usfirst.frc.team2854.robot.commands.maneuvers.*;
 import org.usfirst.frc.team2854.robot.subsystems.*;
 
@@ -71,7 +72,7 @@ public class Robot extends IterativeRobot {
 	}
 	
     public void autonomousInit(){
-    	Scheduler.getInstance().add(new ResetRobot());
+    	Scheduler.getInstance().add(new Auto());
         autonomousCommand = (Command) chooser.getSelected();
         
         
@@ -79,6 +80,7 @@ public class Robot extends IterativeRobot {
     }
 
     public void autonomousPeriodic(){
+    	Scheduler.getInstance().run();
 
     	//Scheduler.getInstance().add(updateVelocity);  TODO uncomment
         //Scheduler.getInstance().run();

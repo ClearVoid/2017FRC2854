@@ -19,6 +19,7 @@ public class Rotate extends Command{
 		velocities[1] = omega * Robot.driveTrain.width;
 		this.velocitySocket = velocitySocket;
 	}
+	
 	//15 feet start perp
 	
 	public Rotate(float omega, int velocitySocket){

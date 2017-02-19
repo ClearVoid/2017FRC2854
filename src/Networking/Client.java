@@ -68,9 +68,9 @@ public class Client extends Thread {
 	}
 
 	public static void main(String[] args) {
-		Client c = new Client("10.28.54.31", 44);
+		Client c = new Client("10.28.54.214", 44);
 		System.out.println("Connected to: " + c.s.getLocalAddress());
-		while(!c.s.isClosed()) {
+		while(c.newData) {
 			System.out.println(c.getLatest());
 		}
 	}
