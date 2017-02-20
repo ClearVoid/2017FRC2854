@@ -50,6 +50,7 @@ public class Robot extends IterativeRobot {
     //	chooser.addDefault("Default Auto", new Auto());
     //	chooser.addObject("My Auto", new Auto());
     	 SmartDashboard.putData("Auto mode", chooser);
+    
     	for(int i = 0; i < stickCount; i++){stick[i] = new Joystick(stickPorts[i]);}
     	
     	//gyro = new AnalogGyro(gyroPort);

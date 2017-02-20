@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
@@ -68,11 +69,19 @@ public class Client extends Thread {
 	}
 
 	public static void main(String[] args) {
-		Client c = new Client("10.28.54.214", 44);
+		Client c = new Client("10.28.54.86", 44);
 		System.out.println("Connected to: " + c.s.getLocalAddress());
-		while(c.newData) {
-			System.out.println(c.getLatest());
+		try {
+			while(true){ 
+					System.out.println(Arrays.deepToString(VisualData.decode(c.getIn().readLine())));
+			}
+		} catch (IOException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+//		while(c.newData) {
+//			System.out.println(c.getLatest());
+//		}
 	}
 
 	public Socket getS() {
