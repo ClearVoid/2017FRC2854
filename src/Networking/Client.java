@@ -16,7 +16,7 @@ public class Client extends Thread {
 	private BufferedReader in;
 	private String value;
 	private boolean newData = false;
-	
+
 	public Client(String host, int port) {
 		try {
 			s = new Socket(host, port);
@@ -24,31 +24,29 @@ public class Client extends Thread {
 			this.start();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} 
-		
-		
+		}
+
 	}
-	
+
 	public String getLatest() {
 		newData = false;
 
-			
 		return value;
 	}
 
 	@Override
 	public void run() {
 		try {
-			while(!s.isClosed() || s.isConnected()) {
-			String value2 = in.readLine();
-			newData = newData || (!value2.equals(value));
-			value = value2;
-			if(value == null) {
-				break;
-			}
+			while (!s.isClosed() || s.isConnected()) {
+				String value2 = in.readLine();
+				newData = newData || (!value2.equals(value));
+				value = value2;
+				if (value == null) {
+					break;
+				}
 			}
 		} catch (IOException e) {
-			//e.printStackTrace();
+			// e.printStackTrace();
 		} finally {
 			try {
 				s.close();
@@ -56,10 +54,10 @@ public class Client extends Thread {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		}
 	}
-	
+
 	public boolean isNewData() {
 		return newData;
 	}
@@ -69,19 +67,19 @@ public class Client extends Thread {
 	}
 
 	public static void main(String[] args) {
-		Client c = new Client("10.28.54.86", 44);
+		Client c = new Client("10.28.54.31", 44);
 		System.out.println("Connected to: " + c.s.getLocalAddress());
 		try {
-			while(true){ 
-					System.out.println(Arrays.deepToString(VisualData.decode(c.getIn().readLine())));
+			while (true) {
+				System.out.println(Arrays.deepToString(VisualData.decode(c.getIn().readLine())));
 			}
 		} catch (IOException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		while(c.newData) {
-//			System.out.println(c.getLatest());
-//		}
+		// while(c.newData) {
+		// System.out.println(c.getLatest());
+		// }
 	}
 
 	public Socket getS() {
@@ -100,7 +98,4 @@ public class Client extends Thread {
 		this.in = in;
 	}
 
-
-	
-	
 }

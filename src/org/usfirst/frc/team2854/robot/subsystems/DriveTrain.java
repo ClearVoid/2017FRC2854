@@ -18,9 +18,11 @@ import com.ctre.CANTalon;
 
 public class DriveTrain extends Subsystem {
 	private static final float diameter = 0.05f;// meters
+	//6 inches
 	private static final float pi = 3.1415926553589323f;
 	// /private static final float e = 2.718281828459045235f;
 	public static final float width = 1;// in meters
+	//28.25 inches
 	public float[] velocityToPower = { 1, 1 };
 	// These constants are obtained thorough the Calibration command;
 //	private static final int driveCimCount = 4;

@@ -73,11 +73,8 @@ public class Robot extends IterativeRobot {
 	}
 	
     public void autonomousInit(){
-    	Scheduler.getInstance().add(new Auto());
-        autonomousCommand = (Command) chooser.getSelected();
-        
-        
-        if (autonomousCommand != null) autonomousCommand.start();
+    	Scheduler.getInstance().add(new Auto("10.28.54.31"));
+    	
     }
 
     public void autonomousPeriodic(){
@@ -90,6 +87,7 @@ public class Robot extends IterativeRobot {
     public void teleopInit() {
     	//Scheduler.getInstance().add(new ResetRobot());
     	Scheduler.getInstance().add(new DriveCommand(driveTrain, oi));
+    	//
     	Scheduler.getInstance().add(new SetClimb(climb,oi));
        // if (autonomousCommand != null) autonomousCommand.cancel();  
     }
